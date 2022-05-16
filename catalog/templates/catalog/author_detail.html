@@ -1,0 +1,19 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+    <h1>Author: {{ author.first_name }} {{ author.last_name }}</h1>
+    ({{ author.get_dates }})
+    {% if user.is_staff or perms.catalog.can_edit %}
+        <p><a href="{% url 'author-update' author.id %}">Edit</a>&emsp;<a href="{% url 'author-delete' author.id %}">Delete</a></p>
+    {% endif %}
+    
+    <div style="margin-left:20px;margin-top:20px">
+        <h4>Books</h4>
+        {% for book in author.book_set.all %}
+            <p><strong><a href="{{ book.get_absolute_url }}">{{ book.title }}</a> ({{ book.id }})</strong></p>
+            <p>{{ book.summary }}</p>
+        {% empty %}
+            <p>There are no books for this author.</p>
+        {% endfor %}
+    </div>
+{% endblock %}
